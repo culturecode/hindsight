@@ -47,12 +47,12 @@ describe Hindsight do
     end
 
     it 'runs save callbacks on the new version' do
-      stub_class(Document) { after_save lambda { |record| record.body = 'ran callbacks' } }
+      mock_callback(Document, :after_save) { |record| record.body = 'ran callbacks' }
       expect(subject.new_version.body).to eq('ran callbacks')
     end
 
     it 'does not run save callbacks on the current instance' do
-      stub_class(Document) { after_save lambda { |record| record.body = 'ran callbacks' } }
+      mock_callback(Document, :after_save) { |record| record.body = 'ran callbacks' }
       subject.new_version
       expect(subject.body).not_to eq('ran callbacks')
     end
@@ -91,7 +91,7 @@ describe Hindsight do
     end
 
     it 'runs save callbacks on the current instance' do
-      stub_class(Document) { before_save lambda { |record| record.body = 'ran callbacks' } }
+      mock_callback(Document, :before_save) { |record| record.body = 'ran callbacks' }
       subject.save
       expect(subject.body).to eq('ran callbacks')
     end

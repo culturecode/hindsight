@@ -57,7 +57,7 @@ describe 'Hindsight::Destroy' do
     end
 
     it 'cascades destroy to dependent versioned associations' do
-      stub_class(Project) { has_many :documents, :dependent => :destroy }
+      mock_class(Project) { has_many :documents, :dependent => :destroy }
       project.update_attributes(:documents => [document])
       document.become_current
 
@@ -65,7 +65,7 @@ describe 'Hindsight::Destroy' do
     end
 
     it 'does not cascade destroy to dependent un-versioned associations' do
-      stub_class(Document) { has_many :comments, :dependent => :destroy }
+      mock_class(Document) { has_many :comments, :dependent => :destroy }
       subject.update_attributes(:comments => [comment])
       expect { document.destroy }.not_to change { Comment.count }
     end
@@ -76,7 +76,7 @@ describe 'Hindsight::Destroy' do
     end
 
     it 'triggers before_destroy callbacks' do
-      stub_class(Document) do
+      mock_class(Document) do
         attr_accessor :test_point
         before_destroy lambda { |record| record.test_point = 'ran before_destroy' }
       end
@@ -85,7 +85,7 @@ describe 'Hindsight::Destroy' do
     end
 
     it 'triggers after_destroy callbacks' do
-      stub_class(Document) do
+      mock_class(Document) do
         attr_accessor :test_point
         after_destroy lambda { |record| record.test_point = 'ran after_destroy' }
       end
