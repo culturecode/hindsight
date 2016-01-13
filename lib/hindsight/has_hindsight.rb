@@ -20,7 +20,7 @@ module Hindsight
 
       options.reverse_merge! :associations => {}
 
-      ignore_association(options[:associations][:ignore])
+      ignore_associations(options[:associations][:ignore])
       detect_through_associations
       detect_versioned_associations unless options[:associations].key?(:versioned)
       has_versioned_association(options[:associations][:versioned])
